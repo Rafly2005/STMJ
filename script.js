@@ -1,114 +1,189 @@
 (() => {
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-  const searchInput = document.querySelector('#product-search');
-  const productCards = [...document.querySelectorAll('.product-card')];
-  const status = document.querySelector('#search-status');
-  const count = document.querySelector('.cart-count');
-  const cartLink = document.querySelector('.cart-link');
-  const toast = document.querySelector('#toast');
-  const toastTitle = document.querySelector('#toast-title');
-  const toastMessage = document.querySelector('#toast-message');
-  let toastTimer;
-  let resetButton;
-  const savedCart = Number.parseInt(localStorage.getItem('stmj-cart-count') || '0', 10);
-  let cart = Number.isFinite(savedCart) ? Math.max(0, savedCart) : 0;
+  'use strict';
 
-  const updateCart = () => {
-    cart = Math.max(0, cart);
-    count.textContent = cart;
-    cartLink.setAttribute('aria-label', `Keranjang, ${cart} item`);
-    localStorage.setItem('stmj-cart-count', String(cart));
+  const elements = {
+    menuToggle: document.querySelector('.menu-toggle'),
+    navMenu: document.querySelector('.nav-menu'),
+    searchInput: document.querySelector('#product-search'),
+    searchForm: document.querySelector('.search-box'),
+    searchStatus: document.querySelector('#search-status'),
+    productSection: document.querySelector('#produk'),
+    productCards: [...document.querySelectorAll('.product-card')],
+    categories: [...document.querySelectorAll('.category-card')],
+    cartCount: document.querySelector('.cart-count'),
+    cartLink: document.querySelector('.cart-link'),
+    toast: document.querySelector('#toast'),
+    toastTitle: document.querySelector('#toast-title'),
+    toastMessage: document.querySelector('#toast-message'),
+    toastClose: document.querySelector('#toast-close'),
   };
-  updateCart();
 
-  menuToggle?.addEventListener('click', () => {
-    const open = menuToggle.getAttribute('aria-expanded') !== 'true';
-    menuToggle.setAttribute('aria-expanded', String(open));
-    menuToggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
-    navMenu.classList.toggle('open', open);
-  });
-  navMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-    navMenu.classList.remove('open');
-    menuToggle?.setAttribute('aria-expanded', 'false');
-    menuToggle?.setAttribute('aria-label', 'Buka menu');
-  }));
+  const CART_STORAGE_KEY = 'stmj-cart-count';
+  let toastTimer;
+  let resetCategoryButton;
 
-  const filterProducts = query => {
+  function readCartCount() {
+    try {
+      const storedCount = Number.parseInt(localStorage.getItem(CART_STORAGE_KEY) || '0', 10);
+      return Number.isFinite(storedCount) ? Math.max(0, storedCount) : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  let cartCount = readCartCount();
+
+  function saveCartCount() {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, String(cartCount));
+    } catch {
+      // Keranjang tetap bisa dipakai selama halaman terbuka meski storage diblokir.
+    }
+  }
+
+  function renderCartCount() {
+    if (elements.cartCount) elements.cartCount.textContent = cartCount;
+    elements.cartLink?.setAttribute('aria-label', `Keranjang, ${cartCount} item`);
+    saveCartCount();
+  }
+
+  function setMenuOpen(isOpen) {
+    elements.menuToggle?.setAttribute('aria-expanded', String(isOpen));
+    elements.menuToggle?.setAttribute('aria-label', isOpen ? 'Tutup menu' : 'Buka menu');
+    elements.navMenu?.classList.toggle('open', isOpen);
+  }
+
+  function clearCategorySelection() {
+    elements.categories.forEach(category => {
+      category.classList.remove('selected');
+      category.setAttribute('aria-pressed', 'false');
+    });
+    resetCategoryButton?.remove();
+    resetCategoryButton = undefined;
+  }
+
+  function showAllProducts() {
+    elements.productCards.forEach(card => { card.hidden = false; });
+    clearCategorySelection();
+    if (elements.searchStatus) elements.searchStatus.textContent = '';
+  }
+
+  function filterProducts(query) {
     const term = query.trim().toLocaleLowerCase('id');
-    let shown = 0;
-    productCards.forEach(card => {
+    let visibleCount = 0;
+
+    clearCategorySelection();
+    elements.productCards.forEach(card => {
       const matches = card.textContent.toLocaleLowerCase('id').includes(term);
       card.hidden = !matches;
-      if (matches) shown++;
+      if (matches) visibleCount++;
     });
-    document.querySelectorAll('.category-card').forEach(item => {
-      item.classList.remove('selected');
-      item.setAttribute('aria-pressed', 'false');
-    });
-    resetButton?.remove();
-    resetButton = undefined;
-    status.textContent = term ? (shown ? `${shown} produk ditemukan.` : 'Produk tidak ditemukan. Coba kata kunci lain.') : '';
-  };
-  searchInput?.addEventListener('input', event => filterProducts(event.target.value));
-  document.querySelector('.search-box')?.addEventListener('submit', event => {
-    event.preventDefault();
-    document.querySelector('#produk')?.scrollIntoView({ behavior: 'smooth' });
-  });
 
-  document.querySelectorAll('.category-card').forEach(category => {
-    category.setAttribute('aria-pressed', 'false');
-    category.addEventListener('click', event => {
-    event.preventDefault();
-    const selected = category.dataset.category;
-    searchInput.value = '';
-    productCards.forEach(card => { card.hidden = card.dataset.product !== selected; });
-    document.querySelectorAll('.category-card').forEach(item => {
-      const isSelected = item === category;
-      item.classList.toggle('selected', isSelected);
-      item.setAttribute('aria-pressed', String(isSelected));
+    if (!elements.searchStatus) return;
+    if (!term) {
+      elements.searchStatus.textContent = '';
+    } else if (visibleCount) {
+      elements.searchStatus.textContent = `${visibleCount} produk ditemukan.`;
+    } else {
+      elements.searchStatus.textContent = 'Produk tidak ditemukan. Coba kata kunci lain.';
+    }
+  }
+
+  function showCategory(category) {
+    const selectedCategory = category.dataset.category;
+    const categoryName = category.querySelector('h3')?.textContent || 'produk';
+
+    if (elements.searchInput) elements.searchInput.value = '';
+    elements.productCards.forEach(card => {
+      card.hidden = card.dataset.product !== selectedCategory;
     });
-    resetButton?.remove();
-    status.textContent = `Menampilkan kategori ${category.querySelector('h3').textContent}.`;
-    resetButton = document.createElement('button');
-    resetButton.type = 'button';
-    resetButton.className = 'text-link category-reset';
-    resetButton.textContent = 'Tampilkan semua';
-    resetButton.addEventListener('click', () => {
-      productCards.forEach(card => { card.hidden = false; });
-      document.querySelectorAll('.category-card').forEach(item => {
-        item.classList.remove('selected');
-        item.setAttribute('aria-pressed', 'false');
+    clearCategorySelection();
+    category.classList.add('selected');
+    category.setAttribute('aria-pressed', 'true');
+
+    if (elements.searchStatus) {
+      elements.searchStatus.textContent = `Menampilkan kategori ${categoryName}.`;
+      resetCategoryButton = document.createElement('button');
+      resetCategoryButton.type = 'button';
+      resetCategoryButton.className = 'text-link category-reset';
+      resetCategoryButton.textContent = 'Tampilkan semua';
+      resetCategoryButton.addEventListener('click', showAllProducts, { once: true });
+      elements.searchStatus.append(' ', resetCategoryButton);
+    }
+
+    elements.productSection?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showToast(productName) {
+    if (!elements.toast) return;
+    if (elements.toastTitle) elements.toastTitle.textContent = 'Berhasil ditambahkan';
+    if (elements.toastMessage) elements.toastMessage.textContent = `${productName} masuk ke keranjang.`;
+
+    elements.toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => elements.toast.classList.remove('show'), 3200);
+  }
+
+  function hideToast() {
+    clearTimeout(toastTimer);
+    elements.toast?.classList.remove('show');
+  }
+
+  function hideUnavailableImage(image) {
+    image.hidden = true;
+    image.parentElement?.classList.add('image-unavailable');
+  }
+
+  function initializeMenu() {
+    elements.menuToggle?.addEventListener('click', () => {
+      const isOpen = elements.menuToggle.getAttribute('aria-expanded') !== 'true';
+      setMenuOpen(isOpen);
+    });
+
+    elements.navMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+  }
+
+  function initializeSearch() {
+    elements.searchInput?.addEventListener('input', event => filterProducts(event.target.value));
+    elements.searchForm?.addEventListener('submit', event => {
+      event.preventDefault();
+      elements.productSection?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  function initializeCategories() {
+    elements.categories.forEach(category => {
+      category.setAttribute('aria-pressed', 'false');
+      category.addEventListener('click', event => {
+        event.preventDefault();
+        showCategory(category);
       });
-      status.textContent = '';
-      resetButton.remove();
-      resetButton = undefined;
     });
-    status.append(' ', resetButton);
-    document.querySelector('#produk')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function initializeCart() {
+    renderCartCount();
+    document.querySelectorAll('[data-add-to-cart]').forEach(button => {
+      button.addEventListener('click', () => {
+        cartCount++;
+        renderCartCount();
+        showToast(button.dataset.name || 'Minuman');
+      });
     });
-  });
+    elements.toastClose?.addEventListener('click', hideToast);
+  }
 
-  const showToast = (name) => {
-    toastTitle.textContent = 'Berhasil ditambahkan';
-    toastMessage.textContent = `${name} masuk ke keranjang.`;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
-  };
-  document.querySelectorAll('[data-add-to-cart]').forEach(button => button.addEventListener('click', () => {
-    cart++;
-    updateCart();
-    showToast(button.dataset.name || 'Minuman');
-  }));
-  document.querySelector('#toast-close')?.addEventListener('click', () => {
-    clearTimeout(toastTimer);
-    toast.classList.remove('show');
-  });
+  function initializeImageFallbacks() {
+    document.querySelectorAll('img').forEach(image => {
+      image.addEventListener('error', () => hideUnavailableImage(image), { once: true });
+    });
+  }
 
-  // Sembunyikan gambar yang belum tersedia agar kartu tetap rapi dan mudah dibaca.
-  document.querySelectorAll('img').forEach(img => img.addEventListener('error', () => {
-    img.hidden = true;
-    img.parentElement.classList.add('image-unavailable');
-  }, { once: true }));
+  initializeMenu();
+  initializeSearch();
+  initializeCategories();
+  initializeCart();
+  initializeImageFallbacks();
 })();
