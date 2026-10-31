@@ -269,12 +269,31 @@ h1 {
   place-items: center;
 }
 
-.hero-image img {
+.hero-image .hero-photo {
   width: min(100%, 440px);
-  max-height: 410px;
-  object-fit: contain;
+  aspect-ratio: 1;
+  border-radius: 50%;
   filter: drop-shadow(0 24px 25px rgba(82, 48, 19, 0.16));
 }
+
+.menu-photo {
+  background-image: url('images/menu-photo-sheet.png');
+  background-repeat: no-repeat;
+  background-size: 400% 300%;
+}
+
+.menu-photo[data-photo='stmj-original'] { background-position: 0 0; }
+.menu-photo[data-photo='stmj-madu'] { background-position: 33.333% 0; }
+.menu-photo[data-photo='stmj-telur'] { background-position: 66.667% 0; }
+.menu-photo[data-photo='susu-jahe'] { background-position: 100% 0; }
+.menu-photo[data-photo='mie-goreng'] { background-position: 0 50%; }
+.menu-photo[data-photo='mie-kuah'] { background-position: 33.333% 50%; }
+.menu-photo[data-photo='pisang-goreng'] { background-position: 66.667% 50%; }
+.menu-photo[data-photo='roti-cokelat'] { background-position: 100% 50%; }
+.menu-photo[data-photo='roti-keju'] { background-position: 0 100%; }
+.menu-photo[data-photo='susu-cokelat'] { background-position: 33.333% 100%; }
+.menu-photo[data-photo='cokelat-sachet'] { background-position: 66.667% 100%; }
+.menu-photo[data-photo='kopi-sachet'] { background-position: 100% 100%; }
 
 /* Store benefits */
 .features {
@@ -392,12 +411,11 @@ h1 {
   box-shadow: var(--shadow);
 }
 
-.category-card img {
+.category-card .menu-photo {
   width: 100%;
-  height: 154px;
+  aspect-ratio: 1;
   border-radius: 11px;
-  background: #f8eddd;
-  object-fit: contain;
+  background-color: #f8eddd;
 }
 
 .category-card h3 {
@@ -438,12 +456,10 @@ h1 {
   display: none;
 }
 
-.product-card > img {
+.product-card > .menu-photo {
   width: 100%;
-  height: 205px;
-  padding: 15px;
-  background: #f8eddd;
-  object-fit: contain;
+  aspect-ratio: 1;
+  background-color: #f8eddd;
 }
 
 .product-info {
@@ -489,15 +505,6 @@ h1 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.05rem;
   text-align: center;
-}
-
-.hero-image.image-unavailable {
-  min-height: 300px;
-  border-radius: 50%;
-}
-
-.hero-image.image-unavailable::after {
-  font-size: 1.5rem;
 }
 
 /* About and footer */
@@ -775,8 +782,8 @@ h1 {
     order: 2;
   }
 
-  .hero-image img {
-    max-height: 270px;
+  .hero-image .hero-photo {
+    width: min(100%, 270px);
   }
 
   .features {
@@ -820,12 +827,12 @@ h1 {
     padding: 9px;
   }
 
-  .category-card img {
-    height: 120px;
+  .category-card .menu-photo {
+    aspect-ratio: 1;
   }
 
-  .product-card > img {
-    height: 155px;
+  .product-card > .menu-photo {
+    aspect-ratio: 1;
   }
 
   .product-info {
