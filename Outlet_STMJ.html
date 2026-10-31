@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>STMJ Corner - Minuman Hangat Pilihan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-content">
+
+            <a href="#" class="logo">
+                <span class="logo-icon"></span>
+                STMJ Corner
+            </a>
+
+            <button class="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="primary-nav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="primary-nav">
+                <a href="#beranda" class="active">Beranda</a>
+                <a href="#produk">Produk</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#kontak">Kontak</a>
+            </nav>
+
+            <div class="nav-actions">
+                <form class="search-box" role="search" action="#produk">
+                    <input
+                        type="search"
+                        name="q"
+                        id="product-search"
+                        placeholder="Cari minuman..."
+                        aria-label="Cari minuman"
+                    >
+                    <button type="submit" aria-label="Cari">⌕</button>
+                </form>
+
+                <a href="#produk" class="nav-icon cart-link" aria-label="Keranjang, 0 item">
+                    🛒<span class="cart-count" aria-live="polite">0</span>
+                </a>
+
+                
+                <a href="#kontak" class="account-icon" aria-label="Kontak">
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 21a8 8 0 0 1 16 0"></path>
+                    </svg>
+                </a>
+
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <!-- Banner utama -->
+        <section class="hero" id="beranda">
+            <div class="container hero-content">
+
+                <div class="hero-text">
+                    <p class="eyebrow">STMJ Hangat Setiap Hari</p>
+
+                    <h1>Hangat dan Nikmat Setiap Hari</h1>
+
+                    <p class="hero-description">
+                        STMJ nikmat dari susu segar dan rempah pilihan,
+                        diracik hangat untuk menemani waktu santai Anda.
+                    </p>
+
+                    <a href="#produk" class="btn btn-primary">
+                        Belanja Sekarang →
+                    </a>
+                </div>
+
+                <div class="hero-image">
+                    <img
+                        src="images/banner-stmj.png"
+                        alt="Segelas STMJ hangat"
+                        fetchpriority="high"
+                    >
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Keunggulan toko -->
+        <section class="features">
+            <div class="container features-grid">
+
+                <div class="feature-item">
+                    <span class="feature-icon">🚚</span>
+                    <div>
+                        <h3>Pengiriman Cepat</h3>
+                        <p>Sampai ke rumah Anda</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">🥛</span>
+                    <div>
+                        <h3>Bahan Segar</h3>
+                        <p>Susu dan rempah pilihan</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">♥</span>
+                    <div>
+                        <h3>Selalu Disajikan Hangat</h3>
+                        <p>Diracik saat dipesan</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">💳</span>
+                    <div>
+                        <h3>Pembayaran Mudah</h3>
+                        <p>Transfer dan COD</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Kategori produk -->
+        <section class="section container" id="kategori">
+            <div class="section-heading">
+                <div>
+                    <h2>Kategori Produk</h2>
+                    <p>Pilih minuman favorit Anda</p>
+                </div>
+
+                <a href="#produk" class="text-link">Lihat Semua →</a>
+            </div>
+
+            <div class="category-grid">
+
+                <a href="#produk" class="category-card" data-category="original">
+                    <img
+                        src="images/stmj-original.png"
+                        alt="STMJ Original"
+                        loading="lazy"
+                    >
+                    <h3>STMJ Original</h3>
+                </a>
+
+                <a href="#produk" class="category-card" data-category="madu">
+                    <img
+                        src="images/stmj-madu.png"
+                        alt="STMJ Madu"
+                        loading="lazy"
+                    >
+                    <h3>STMJ Madu</h3>
+                </a>
+
+                <a href="#produk" class="category-card" data-category="telur">
+                    <img
+                        src="images/stmj-telur.png"
+                        alt="STMJ Telur"
+                        loading="lazy"
+                    >
+                    <h3>STMJ Telur</h3>
+                </a>
+
+                <a href="#produk" class="category-card" data-category="jahe">
+                    <img
+                        src="images/susu-jahe.png"
+                        alt="Susu jahe hangat"
+                        loading="lazy"
+                    >
+                    <h3>Susu Jahe</h3>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Produk terlaris -->
+        <section class="section container" id="produk">
+            <div class="section-heading">
+                <div>
+                    <h2>Menu Favorit</h2>
+                    <p>Minuman favorit pelanggan kami</p>
+                </div>
+
+                <a href="#produk" class="text-link">Lihat Semua →</a>
+            </div>
+
+            <p class="search-status" id="search-status" aria-live="polite"></p>
+
+            <div class="product-grid" id="product-grid">
+
+                <article class="product-card" data-product="original">
+                    <img
+                        src="images/stmj-original.png"
+                        alt="STMJ Original"
+                        loading="lazy"
+                    >
+
+                    <div class="product-info">
+                        <h3>STMJ Original</h3>
+                        <p class="price">Rp 12.000</p>
+                        <button type="button" class="btn btn-product" data-add-to-cart data-name="STMJ Original">
+                            🛒 Tambah
+                        </button>
+                    </div>
+                </article>
+
+                <article class="product-card" data-product="madu">
+                    <img
+                        src="images/stmj-madu.png"
+                        alt="STMJ Madu"
+                        loading="lazy"
+                    >
+
+                    <div class="product-info">
+                        <h3>STMJ Madu</h3>
+                        <p class="price">Rp 17.000</p>
+                        <button type="button" class="btn btn-product" data-add-to-cart data-name="STMJ Madu">
+                            🛒 Tambah
+                        </button>
+                    </div>
+                </article>
+
+                <article class="product-card" data-product="telur">
+                    <img
+                        src="images/stmj-telur.png"
+                        alt="STMJ Telur"
+                        loading="lazy"
+                    >
+
+                    <div class="product-info">
+                        <h3>STMJ Telur</h3>
+                        <p class="price">Rp 20.000</p>
+                        <button type="button" class="btn btn-product" data-add-to-cart data-name="STMJ Telur">
+                            🛒 Tambah
+                        </button>
+                    </div>
+                </article>
+
+                <article class="product-card" data-product="jahe">
+                    <img
+                        src="images/susu-jahe.png"
+                        alt="Susu Jahe"
+                        loading="lazy"
+                    >
+
+                    <div class="product-info">
+                        <h3>Susu Jahe</h3>
+                        <p class="price">Rp 12.000</p>
+                        <button type="button" class="btn btn-product" data-add-to-cart data-name="Susu Jahe">
+                            🛒 Tambah
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Tentang toko -->
+        <section class="about" id="tentang">
+            <div class="container about-content">
+                <p class="eyebrow">Tentang STMJ Corner</p>
+
+                <h2>Nikmati kehangatan STMJ dalam setiap tegukan.</h2>
+
+                <p>
+                    STMJ Corner hadir menyajikan minuman susu, telur, madu, dan jahe
+                    yang diracik hangat dengan cita rasa khas dan bahan pilihan.
+                </p>
+
+                <a href="#kontak" class="btn btn-light">
+                    Hubungi Kami
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="kontak">
+        <div class="container footer-grid">
+
+            <div class="footer-brand">
+                <a href="#beranda" class="logo">
+                    <span class="logo-icon">🥖</span>
+                    STMJ Corner
+                </a>
+                <p>Hangat dan Nikmat Setiap Hari</p>
+            </div>
+
+            <div>
+                <h3>Menu</h3>
+                <a href="#beranda">Beranda</a>
+                <a href="#produk">Produk</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#kontak">Kontak</a>
+            </div>
+
+            <div>
+                <h3>Bantuan</h3>
+                <a href="#kontak">Cara Belanja</a>
+                <a href="#kontak">Pengiriman</a>
+                <a href="#kontak">Pembayaran</a>
+            </div>
+
+            <div>
+                <h3>Kontak Kami</h3>
+                <p>Email: info@stmjcorner.com</p>
+                <p>Telepon: 08xx-xxxx-xxxx</p>
+            </div>
+
+        </div>
+
+        <div class="container copyright">
+            <p>&copy; 2026 STMJ Corner. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- Notifikasi STMJ Corner -->
+
+    <div id="toast" class="toast" role="status" aria-live="polite">
+        <div class="toast-icon">✓</div>
+
+        <div class="toast-content">
+            <strong id="toast-title">Berhasil!</strong>
+            <p id="toast-message">Minuman ditambahkan ke keranjang.</p>
+        </div>
+
+        <button id="toast-close" class="toast-close" type="button"
+            aria-label="Tutup notifikasi">&times;</button>
+    </div>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
