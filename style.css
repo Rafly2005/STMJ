@@ -364,8 +364,15 @@ h1 {
 .category-grid,
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
+}
+
+.category-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.product-grid {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .category-card {

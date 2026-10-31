@@ -6,6 +6,7 @@
     navMenu: document.querySelector('.nav-menu'),
     searchInput: document.querySelector('#product-search'),
     searchForm: document.querySelector('.search-box'),
+    searchButton: document.querySelector('.search-box button'),
     searchStatus: document.querySelector('#search-status'),
     productSection: document.querySelector('#produk'),
     productCards: [...document.querySelectorAll('.product-card')],
@@ -95,7 +96,8 @@
 
     if (elements.searchInput) elements.searchInput.value = '';
     elements.productCards.forEach(card => {
-      card.hidden = card.dataset.product !== selectedCategory;
+      const productCategory = card.dataset.category || card.dataset.product;
+      card.hidden = productCategory !== selectedCategory;
     });
     clearCategorySelection();
     category.classList.add('selected');
@@ -146,6 +148,7 @@
   }
 
   function initializeSearch() {
+    if (elements.searchButton) elements.searchButton.textContent = '\u2315';
     elements.searchInput?.addEventListener('input', event => filterProducts(event.target.value));
     elements.searchForm?.addEventListener('submit', event => {
       event.preventDefault();
@@ -166,6 +169,7 @@
   function initializeCart() {
     renderCartCount();
     document.querySelectorAll('[data-add-to-cart]').forEach(button => {
+      button.textContent = 'Tambah ke Keranjang';
       button.addEventListener('click', () => {
         cartCount++;
         renderCartCount();
